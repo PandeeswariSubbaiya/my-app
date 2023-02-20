@@ -30,7 +30,7 @@ node{
         sh 'docker push pandeeswari1814/webapp'
    }
     stage('K8S Deploy'){
-        withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'K8S', namespace: '', restrictKubeConfigAccess: false, serverUrl: '') {
+        withKubeConfig(credentialsId: 'K8S',restrictKubeConfigAccess: false, serverUrl: '') {
     // some block
         sh ('kubectl apply -f  eks-deploy-k8s.yaml')
         }
