@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: tomcat
-        image: pandeeswari1814/webapp
+        image: a4f2ab91416fa40218ecc1084fb11650-1966689425.ap-south-1.elb.amazonaws.com/pandeeswari1814/webapp
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
