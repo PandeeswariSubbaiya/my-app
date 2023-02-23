@@ -21,13 +21,13 @@ node{
 	    }
 	}
 	stage('Build Docker Image'){
-        sh 'docker build -t pandeeswari1814/webapp .'
+        sh 'docker build -t pandeeswari1814/webapplication .'
    }
     stage('Docker Image Push'){
         withCredentials([string(credentialsId: 'dockerPass', variable: 'dockerPassword')]) {
         sh "docker login -u pandeeswari1814 -p ${dockerPassword}"
     }
-        sh 'docker push pandeeswari1814/webapp'
+        sh 'docker push pandeeswari1814/webapplication'
    }
     stage('K8S Deploy'){
         withKubeConfig(credentialsId: 'K8S',restrictKubeConfigAccess: false, serverUrl: '') {
