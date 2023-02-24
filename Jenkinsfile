@@ -17,13 +17,10 @@ node{
 	    timeout(time: 1, unit: 'HOURS') {
 	       def qg = waitForQualityGate()
 	        if (qg.status != 'OK') {
-	           // error "Pipeline aborted due to quality gate failure: ${qg.status}"
+	           //error "Pipeline aborted due to quality gate failure: ${qg.status}"
 	             catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE'){
 	                 sh "exit 1"
 	             }
-	        }
-	        else {
-	            echo "skipping stage"
 	        }
 	    }
 	}
@@ -39,6 +36,7 @@ node{
     stage('K8S Deploy'){
         withKubeConfig(credentialsId: 'K8S',restrictKubeConfigAccess: false, serverUrl: '') {
     // some block
+	sh ('kubectl delete deployment tomcat')
         sh ('kubectl apply -f  eks-deploy-k8s.yaml')
         }
     }
