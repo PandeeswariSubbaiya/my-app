@@ -20,13 +20,13 @@ spec:
         app: tomcat
     spec:
       containers:
-      - name: tomcat
-        image: pandeeswari1814/webapplication:1.0.0
-        imagePullPolicy: Always
-        ports:
-        - containerPort: 8080
-          name: http
-          protocol: TCP
+        - name: tomcat
+          image: pandeeswari1814/webapplication:1.0.0
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
 # service type loadbalancer       
 ---
 apiVersion: v1
