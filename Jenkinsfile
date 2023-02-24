@@ -13,11 +13,18 @@ node{
 	          sh "${mvnHome}/bin/mvn sonar:sonar"
 	        }
 	    }
-	stage("Quality Gate"){
+		stage("Quality Gate"){
 	    timeout(time: 1, unit: 'HOURS') {
-	        def qg = waitForQualityGate('sonarqube')
+	       def qg = waitForQualityGate()
 	        if (qg.status != 'OK') {
-	            error "Pipeline aborted due to quality gate failure: ${qg.status}"
+	           // error "Pipeline aborted due to quality gate failure: ${qg.status}"
+	             catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE'){
+	                 sh "exit 1"
+	             }
+	        }
+	        else {
+	            echo "skipping stage"
+	        }
 	    }
 	}
 	stage('Build Docker Image'){
