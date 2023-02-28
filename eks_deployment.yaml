@@ -52,7 +52,35 @@ spec:
         - containerPort: 8080
           name: http
           protocol: TCP
- 
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: tomcat
+  name: tomcat3
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: tomcat
+      version: v3.0.0
+  template:
+    metadata:
+      labels:
+        app: tomcat
+        version: v3.0.0
+    spec:
+      containers:
+      - name: tomcat
+        image: pandeeswari1814/canaryapplication
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+          
 # service type loadbalancer       
 ---
 apiVersion: v1
