@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
         - name: tomcat
-          image: pandeeswari1814/canaryapplication
+          image: pandeeswari1814/canaryapplication:1.0.0
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
