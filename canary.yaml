@@ -35,7 +35,7 @@ kind: Service
 metadata:
   labels:
     app: tomcat
-  name: tomcat1
+  name: tomcat
 spec:
   ports:
     - name: http
