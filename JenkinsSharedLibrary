@@ -3,8 +3,7 @@
 node{
    stage('Maven Build'){
                 script{
-                    sh "echo $USER"
-		    Build('Install')
+                    sh "mvn clean install"
                 }
 	}
    }
