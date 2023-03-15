@@ -4,6 +4,7 @@ resource "aws_instance" "myec2-NorthVirgina" {
   instance_type          = "t2.micro"
   availability_zone = "us-east-1a"
   vpc_security_group_ids = [aws_security_group.allow_tls.id]
+  security_groups = ["security_jenkins_port"]
   key_name = "North_Virginia_Keypair"
 
   tags = {
@@ -17,8 +18,10 @@ resource "aws_instance" "myec2-NorthVirgina" {
 }
 }  
   //Security group creation and whitelisting the ip
-resource "aws_security_group" "allow_tls" {
-  name = "terraform-sg-NvirginiaRegion"
+//resource "aws_security_group" "allow_tls" {
+resource "aws_security_group" "security_jenkins_port" {
+  name        = "security_jenkins_port"
+  //name = "terraform-sg-NvirginiaRegion"
 
   ingress {
     description = "Allow port 22 - inbound"
