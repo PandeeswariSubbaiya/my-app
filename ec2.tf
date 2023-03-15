@@ -2,10 +2,10 @@ resource "aws_instance" "myec2-NorthVirgina" {
   count                  = 2
   ami                    = "ami-0557a15b87f6559cf"
   instance_type          = "t2.micro"
-  availability_zone = "us-east-1a"
+  availability_zone = "ap-south-1a"
   //vpc_security_group_ids = [aws_security_group.allow_tls.id]
   security_groups = ["security_jenkins_port"]
-  key_name = "North_Virginia_Keypair"
+  key_name = "Mumbai_Region"
 
   tags = {
     name = "testec2"
@@ -21,7 +21,7 @@ resource "aws_instance" "myec2-NorthVirgina" {
 //resource "aws_security_group" "allow_tls" {
 resource "aws_security_group" "security_jenkins_port" {
   name        = "security_jenkins_port"
-  //name = "terraform-sg-NvirginiaRegion"
+  //name = "terraform-sg-MumbaiRegion"
 
   ingress {
     description = "Allow port 22 - inbound"
