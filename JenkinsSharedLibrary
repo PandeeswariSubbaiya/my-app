@@ -2,9 +2,13 @@
 
 node{
     stage('Maven Build'){
-        def mvnHome =  tool name: 'maven3', type: 'maven'  
+        name: maven3 
         sh "echo $USER"
-		Build('clean')
+		Build('install')
         }
-    stage()
+   stage('Sonar'){
+        withSonarQubeEnv('sonarqube'){
+            sonarQube.sonarAnalysis('my-app','http://54.160.185.75:9000/','56c5ab64a1066bf99c5a32c8084dd0f8bbca645a')
+        }
     }
+}
