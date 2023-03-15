@@ -2,8 +2,7 @@
 
 node{
     stage('Maven Build'){
-        name: maven3 
-        sh "echo $USER"
+        name: maven3
 		Build('install')
         }
    stage('Sonar'){
