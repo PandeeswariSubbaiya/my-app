@@ -3,7 +3,7 @@
 node{
     stage('Maven Build'){
         name: maven3
-		Build('install')
+		Build('clean')
         }
    stage('Sonar'){
         withSonarQubeEnv('sonarqube'){
@@ -11,7 +11,6 @@ node{
         }
     }
    stage('Terraform Init'){
-       // 'terraform.init -reconfigure'
        terraform.init(ec2_file: 'ec2.tf', provider_file: 'provider.tf')
     }
     stage('Terraform Plan'){
