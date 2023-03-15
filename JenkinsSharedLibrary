@@ -10,4 +10,14 @@ node{
             sonarQube.sonarAnalysis('my-app','http://54.160.185.75:9000/','56c5ab64a1066bf99c5a32c8084dd0f8bbca645a')
         }
     }
+   stage('Terraform Init'){
+       // 'terraform.init -reconfigure'
+       terraform.init(ec2_file: 'ec2.tf', provider_file: 'provider.tf')
+    }
+    stage('Terraform Plan'){
+        terraform.plan()
+    }
+    stage('Terraform Apply'){
+        terraform.apply()
+    }
 }
