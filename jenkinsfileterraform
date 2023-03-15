@@ -1,0 +1,52 @@
+node{
+    environment{
+        AWS_ACCESS_KEY_ID     = credentials('AWS_ACCESS_KEY_ID')
+        AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
+    }
+    stage('SCM Checkout'){
+     git 'https://github.com/PandeeswariSubbaiya/CI-usingAnsible.git'
+   }
+   stage('maven-buildstage'){
+        def mvnHome =  tool name: 'maven3', type: 'maven'   
+            sh "${mvnHome}/bin/mvn clean package"
+   }
+   stage('SonarQube Analysis'){
+        def mvnHome =  tool name: 'maven3', type: 'maven'
+	        withSonarQubeEnv('sonarqube') { 
+	          sh "${mvnHome}/bin/mvn sonar:sonar"
+	          sh "cat target/sonar/report-task.txt"
+	        }
+	    }
+   stage('Qualitygate') {
+       timeout(time: 1, unit: 'HOURS') {
+       }
+   }
+   stage('Dependency check'){
+        dependencyCheck additionalArguments: '--format	HTML', odcInstallation: 'Dp-Check'
+    }
+   stage('Terraform Init') {
+        sh script: 'terraform init -reconfigure'
+      }
+    stage('Terraform plan') {
+        sh script: 'terraform plan -lock=false'
+      }
+    stage('Terraform apply') {
+        sh script: 'terraform apply -lock=false -auto-approve'
+      }
+    stage('ansible execution') {
+        //ansiblePlaybook credentialsId: 'North_Virginia_Keypair', disableHostKeyChecking: true, installation: 'ansible', inventory: 'aws_ec2.yaml', playbook: 'tomcat.yaml'
+          ansiblePlaybook credentialsId: 'North_Virginia_Keypair', disableHostKeyChecking: true, installation: 'ansible', inventory: 'aws_ec2.yaml', playbook: 'tomcat.yaml'
+        
+    }
+    stage('OWASP DAST') {
+            sh '''
+            docker pull owasp/zap2docker-stable
+            docker run -dt --name owasp owasp/zap2docker-stable sh
+            docker exec owasp mkdir /zap/wrk
+            docker exec owasp zap-baseline.py -t http://54.167.19.253:8080/ -x report.xml -I
+            echo $WORKSPACE
+            docker cp owasp:/zap/wrk/report.xml $WORKSPACE/report.xml
+            docker stop owasp && docker rm owasp
+            '''
+            }
+}
